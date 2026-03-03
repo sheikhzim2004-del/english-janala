@@ -42,17 +42,28 @@ const displayLevelWord = (words) => {
     const wordContainer = document.getElementById('word-container');
     wordContainer.innerHTML = ""
 
-// id: 83
-// level: 1
-// meaning: "দরজা"
-// pronunciation: "ডোর"
-// word: "Door"
+    //check lesson empty or not (5)
+    if (words.length === 0) {
+        wordContainer.innerHTML = `
+        <div class="text-center col-span-full space-y-2 font-bangla py-6 mx-4 rounded-lg">
+            <img src="./assets/alert-error.png" alt="" class="mx-auto">
+            <p class="text-gray-500 font-bold">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+            <h2 class="text-4xl font-bold">নেক্সট Lesson এ যান</h2>
+        </div>
+        `
+    }
+
+    // id: 83
+    // level: 1
+    // meaning: "দরজা"
+    // pronunciation: "ডোর"
+    // word: "Door"
 
     words.forEach(word => {
         console.log(word)
         const card = document.createElement('div');
         card.innerHTML = `
-        <div class="bg-white rounded-md m-4 py-10 shadow-sm px-10 text-center space-y-2">
+        <div class="bg-white rounded-md mx-3 py-10 shadow-sm px-10 text-center space-y-4 h-full">
             <h1 class="text-3xl font-bold">${word.word}</h1>
             <p class="text-xl font-medium">Meaning /Pronounciation</p>
             <p class="font-bangla text-2xl font-semibold text-[#4d4d50]">"${word.meaning} / ${word.pronunciation}"</p>
