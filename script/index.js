@@ -1,4 +1,19 @@
+// synonims html element creat function
+const creatElement = (arr) => {
+    const htmlElement = arr.map(el => `<span class="btn">${el}</span>`);
+    return htmlElement.join(' ');
+}
 
+//spinner section function
+const manageSpinner =(status)=>{
+    if(status == true){
+        document.getElementById('spinner').classList.remove('hidden')
+        document.getElementById('word-container').classList.add('hidden')
+    }else{
+        document.getElementById('spinner').classList.add('hidden')
+        document.getElementById('word-container').classList.remove('hidden')
+    }
+}
 
 // all levels catch on load by fetch (01)
 const loadLesson = () => {
@@ -8,15 +23,15 @@ const loadLesson = () => {
 }
 
 //remove active class all and set a click btn active class (07)
-const removActive =()=> {
+const removActive = () => {
     const lessonButtons = document.querySelectorAll('.lesson-btn');
-    lessonButtons.forEach(btn=> btn.classList.remove('active'));
+    lessonButtons.forEach(btn => btn.classList.remove('active'));
 }
-
 
 
 // all levels catch on load by fetch (03)
 const loadLevelWord = (id) => {
+    manageSpinner(true) //spinner function call(true) when the word start loading
     const url = `https://openapi.programming-hero.com/api/level/${id}`;
     fetch(url)
         .then(res => res.json())
@@ -33,29 +48,29 @@ const loadLevelWord = (id) => {
 }
 
 //load word detail by fetch
-const loadWordDetail =async (id)=>{
+const loadWordDetail = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`;
     const res = await fetch(url);
     const details = await res.json();
-    displayWordDetails(details.data)  
+    displayWordDetails(details.data)
 }
 
 //display word details
-const displayWordDetails = (word)=>{
+const displayWordDetails = (word) => {
     const wordBox = document.getElementById('details-container');
 
-// "word": "Eager",
-// "meaning": "আগ্রহী",
-// "pronunciation": "ইগার",
-// "level": 1,
-// "sentence": "The kids were eager to open their gifts.",
-// "points": 1,
-// "partsOfSpeech": "adjective",
-// "synonyms": [
-// "enthusiastic",
-// "excited",
-// "keen"
-// ],
+    // "word": "Eager",
+    // "meaning": "আগ্রহী",
+    // "pronunciation": "ইগার",
+    // "level": 1,
+    // "sentence": "The kids were eager to open their gifts.",
+    // "points": 1,
+    // "partsOfSpeech": "adjective",
+    // "synonyms": [
+    // "enthusiastic",
+    // "excited",
+    // "keen"
+    // ],
 
     wordBox.innerHTML = `
     <h1 class="text-4xl font-bold">${word.word} (<i class="fa-solid fa-microphone-lines"></i> : ${word.pronunciation})</h1>
@@ -70,9 +85,7 @@ const displayWordDetails = (word)=>{
                 <div class="space-y-5">
                     <h2 class="text-xl font-medium">pronunciation</h2>
                     <div class="">
-                    <button class="btn">${word.synonyms[0]}</button>
-                    <button class="btn">${word.synonyms[1]}</button>
-                    <button class="btn">${word.synonyms[2]}</button>
+                    ${creatElement(word.synonyms)}
                     </div>
                 </div>
     
@@ -115,7 +128,7 @@ const displayLevelWord = (words) => {
             <p class="text-gray-500 font-bold">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
             <h2 class="text-4xl font-bold">নেক্সট Lesson এ যান</h2>
         </div>
-        `
+        `;
     }
 
     // id: 83
@@ -125,13 +138,13 @@ const displayLevelWord = (words) => {
     // word: "Door"
 
     words.forEach(word => {
-        
+
         const card = document.createElement('div');
         card.innerHTML = `
         <div class="bg-white rounded-md mx-3 py-10 shadow-sm px-10 text-center space-y-4 h-full">
             <h1 class="text-3xl font-bold">${word.word ? word.word : "শব্দ পাওয়া যায়নি"}</h1>
             <p class="text-xl font-medium">Meaning /Pronounciation</p>
-            <p class="font-bangla text-2xl font-semibold text-[#4d4d50]">"${word.meaning? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</p>
+            <p class="font-bangla text-2xl font-semibold text-[#4d4d50]">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</p>
             <div class="flex justify-between mt-5">
                 <button onclick="loadWordDetail(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
                 <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
@@ -140,6 +153,18 @@ const displayLevelWord = (words) => {
         `
         wordContainer.appendChild(card);
     })
+    manageSpinner(false) //spinner function call(false) when the word end loading
 }
 
 loadLesson()
+
+
+document.getElementById('btn-search').addEventListener('click', () =>{
+const input = document.getElementById('input-search').value.trim();
+console.log(input);
+
+fetch("https://openapi.programming-hero.com/api/words/all")
+.then(response => response.json())
+.then(data => console.log(data))
+
+})
