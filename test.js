@@ -4,5 +4,5 @@
 
 
 
-const synonyms = ['hi', 'hellow', 'by'];
-creatElement(synonyms)
+// const synonyms = ['hi', 'hellow', 'by'];
+// creatElement(synonyms)

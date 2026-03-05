@@ -185,6 +185,16 @@ document.getElementById('btn-search').addEventListener('click', () => {
             displayLevelWord(filterWords);
         })
 
+});
 
 
+
+// toggle dark and light theem
+const theemToggle = document.getElementById('theem-toggle');
+theemToggle.addEventListener('change', ()=>{
+    if(theemToggle.checked){
+        document.documentElement.setAttribute('data-theme', 'valentine');
+    }else{
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
 })
